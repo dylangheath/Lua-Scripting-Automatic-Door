@@ -1,0 +1,47 @@
+tweenService = game:GetService("TweenService")
+
+doorRight = game.Workspace.Door.Door1
+doorLeft = game.Workspace.Door.Door2
+DoorOpen = false
+
+DoorOpenInformation = TweenInfo.new(
+
+	0.2, --Length
+	Enum.EasingStyle.Linear, -- Easing Style of Tween
+	Enum.EasingDirection.Out, --Easing Direction of the Tween
+	0, -- Repeat
+	false, -- Should tween Repeat?
+	0 -- Delay between each tween
+)
+
+DoorRightProperties = {
+	Position = Vector3.new(50.65, 5.265, -122.2);
+}
+DoorLeftProperties = {
+	Position = Vector3.new(20.95, 5.265, -122.2);
+}
+DoorRightCloseProperties = {
+	Position = Vector3.new(40.65, 5.265, -122.2);
+}
+DoorLeftCloseProperties = {
+	Position = Vector3.new(30.75, 5.265, -122.2);
+}
+DoorOpenTween = tweenService:Create(doorRight,DoorOpenInformation,DoorRightProperties)
+DoorOpenTween1 = tweenService:Create(doorLeft,DoorOpenInformation,DoorLeftProperties)
+DoorCloseTween = tweenService:Create(doorRight,DoorOpenInformation,DoorRightCloseProperties)
+DoorCloseTween1 = tweenService:Create(doorLeft,DoorOpenInformation,DoorLeftCloseProperties)
+
+
+game.Workspace.Door.Sensor.Touched:Connect(function(hit)
+	if game.Players:GetPlayerFromCharacter(hit.Parent) and DoorOpen ~= true then 
+		DoorOpen = true
+		DoorOpenTween:Play()
+		DoorOpenTween1:Play()
+		script.Parent.Open:Play()
+		wait(5)
+		script.Parent.Close:Play()
+		DoorCloseTween:Play()
+		DoorCloseTween1:Play()
+		DoorOpen = false
+	end	
+end)
